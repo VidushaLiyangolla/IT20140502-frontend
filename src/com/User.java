@@ -201,71 +201,70 @@ public class User {
 	
 	//read most relevant user details
 	
-		public String readOneUser()
-		 {
-		 String output = "";
-		 try
-		 {
-		 Connection con = connect();
-		 if (con == null)
-		 {
-			 return "Error while connecting to the database for reading..."; 
+			public String readOneUser()
+			 {
+			 String output = "";
+			 try
+			 {
+			 Connection con = connect();
+			 if (con == null)
+			 {
+				 return "Error while connecting to the database for reading..."; 
+				 }
+			 // Prepare the view table to be displayed
+			 output = "<table border='1'>"
+						
+						+ "<tr>"
+						+ "<th>User Id</th>"
+						+ "<th>First Name</th>"
+						+ "<th>Last Name</th>" 
+						+ "<th>Account No</th>"
+						+ "<th>Address</th>" 
+						+ "<th>Phone</th>"  
+						+ "<th>Action</th>"
+						+ "</tr>";
+
+			 String query = "select * from user where UserId= (Select max(UserId) from user)";
+			 Statement stmt = con.createStatement();
+			 ResultSet rs = stmt.executeQuery(query);
+			 // iterate through the rows in the result set
+			 while (rs.next())
+			 {
+				 
+					String userId = rs.getString("userId");
+					String firstName = rs.getString("firstName");
+					String lastName = rs.getString("lastName");
+					String accountNo = rs.getString("accountNo");
+					String address = rs.getString("address");
+					String phone = rs.getString("phone");
+					
+					
+			 // Add into the html table
+					output += "<tr><td>" + userId + "</td>";
+					output += "<td>" + firstName + "</td>";
+					output += "<td>" + lastName + "</td>";
+					output += "<td>" + accountNo + "</td>";
+					output += "<td>" + address + "</td>";
+					output += "<td>" + phone + "</td>";
+					
+			 // buttons
+					output += "<td>" + "<input name='btnUpdate' type='button' value='Update' class='btn btn-success'>"
+							+ " <input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>" + "</td></tr>"
+						
+						 +"<input name='userId' type='hidden' value='" + userId + "'>" + "</form></td></tr>";
 			 }
-		 // Prepare the view table to be displayed
-		 output = "<table border='1'>"
-					
-					+ "<tr>"
-					+ "<th>User Id</th>"
-					+ "<th>First Name</th>"
-					+ "<th>Last Name</th>" 
-					+ "<th>Account No</th>"
-					+ "<th>Address</th>" 
-					+ "<th>Phone</th>"  
-					+ "<th>Action</th>"
-					+ "</tr>";
-
-		 String query = "select * from user where UserId= (Select max(UserId) from user)";
-		 Statement stmt = con.createStatement();
-		 ResultSet rs = stmt.executeQuery(query);
-		 // iterate through the rows in the result set
-		 while (rs.next())
-		 {
-			 
-				String userId = rs.getString("userId");
-				String firstName = rs.getString("firstName");
-				String lastName = rs.getString("lastName");
-				String accountNo = rs.getString("accountNo");
-				String address = rs.getString("address");
-				String phone = rs.getString("phone");
-				
-				
-		 // Add into the html table
-				output += "<tr><td>" + userId + "</td>";
-				output += "<td>" + firstName + "</td>";
-				output += "<td>" + lastName + "</td>";
-				output += "<td>" + accountNo + "</td>";
-				output += "<td>" + address + "</td>";
-				output += "<td>" + phone + "</td>";
-				
-		 // buttons
-				output += "<td>" + "<input name='btnUpdate' type='button' value='Update' class='btn btn-success'>"
-						+ " <input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>" + "</td></tr>"
-					
-					 +"<input name='userId' type='hidden' value='" + userId + "'>" + "</form></td></tr>";
-		 }
-		 con.close();
-		 // Complete the html table
-		 output += "</table>";
-		 }
-		 catch (Exception e)
-		 {
-		 output = "Error while reading the items.";
-		 System.err.println(e.getMessage());
-		 }
-		 return output;
-		 } 
-		
-
+			 con.close();
+			 // Complete the html table
+			 output += "</table>";
+			 }
+			 catch (Exception e)
+			 {
+			 output = "Error while reading the items.";
+			 System.err.println(e.getMessage());
+			 }
+			 return output;
+			 } 
+			
 
 
 		
